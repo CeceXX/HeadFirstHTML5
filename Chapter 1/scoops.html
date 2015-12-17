@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+	<head>		
+	</head>
+	<body>
+		<script>
+			var scoops= 10;
+			while (scoops >= 0) {
+				if (scoops == 3) {
+					document.writeln("Ice cream is running low!" + "<br>");
+				} else if (scoops > 9) {
+					document.writeln("Eat faster, the ice cream is going to melt!" + "<br>");
+				} else if (scoops == 2) {
+					document.writeln("Going once!" + "<br>");
+				} else if (scoops == 1) {
+					document.writeln("Going twice!" + "<br>");
+				} else if (scoops == 0) {
+					document.writeln("Gone!" + "<br>");
+				} else {
+					document.writeln("Still lots of ice cream left, come and get it." + "<br>");
+				}
+				scoops--;
+			}
+			document.writeln("Life without ice cream isn't the same." + "<br>");
+		</script>
+	</body>
+</html>
