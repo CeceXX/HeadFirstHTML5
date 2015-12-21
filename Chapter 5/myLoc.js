@@ -5,21 +5,6 @@ var ourCoords = {
 	longitude: -122.52099
 };
 
-var map;
-
-function showMap(coords) {
-	var googleLatAndLong = new google.maps.LatLng(coords.latitude, coords.longitude);
-	
-	var mapOptions = {
-		zoom: 10,
-		center: googleLatAndLong,
-		mapTypeId: google.maps.MapTypeID.ROADMAP
-	};
-	
-	var mapDiv = document.getElementById("map");
-	map = new google.maps.Map(mapDiv, mapOptions);
-}
-
 function getMyLocation() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(displayLocation, displayError);
@@ -40,6 +25,34 @@ function displayLocation(position) {
 	showMap(position.coords);
 }
 
+function computeDistance(startCoords, destCoords) {
+	var startLatRads = degreesToRadians(startCoords.latitude);
+	var startLongRads = degreesToRadians(startCoords.longitude);
+	var destLatRads = degreesToRadians(destCoords.latitude);
+	var destLongRads = degreesToRadians(destCoords.longitude);
+	var radiusEarth = 6371;
+	return Math.acos(Math.sin(startLatRads) * Math.sin(destLatRads) + Math.cos(startLatRads) * Math.cos(destLatRads) * Math.cos(startLongRads - destLongRads)) * radiusEarth;
+}
+
+function degreesToRadians(degrees) {
+	return (degrees * Math.PI) / 180;
+}
+
+var map;
+
+function showMap(coords) {
+	var googleLatAndLong = new google.maps.LatLng(coords.latitude, coords.longitude);
+	
+	var mapOptions = {
+		zoom: 10,
+		center: googleLatAndLong,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	
+	var mapDiv = document.getElementById("map");
+	map = new google.maps.Map(mapDiv, mapOptions);
+}
+
 function displayError(error) {
 	var errorTypes = {
 		0: "Unknown error",
@@ -53,17 +66,4 @@ function displayError(error) {
 	}
 	var div = document.getElementById("location");
 	div.innerHTML = errorMessage;
-}
-
-function computeDistance(startCoords, destCoords) {
-	var startLatRads = degreesToRadians(startCoords.latitude);
-	var startLongRads = degreesToRadians(startCoords.longitude);
-	var destLatRads = degreesToRadians(destCoords.latitude);
-	var destLongRads = degreesToRadians(destCoords.longitude);
-	var radiusEarth = 6371;
-	return Math.acos(Math.sin(startLatRads) * Math.sin(destLatRads) + Math.cos(startLatRads) * Math.cos(destLatRads) * Math.cos(startLongRads - destLongRads)) * radiusEarth;
-}
-
-function degreesToRadians(degrees) {
-	return degrees * Math.PI / 180;
 }
