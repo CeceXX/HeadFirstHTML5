@@ -51,6 +51,30 @@ function showMap(coords) {
 	
 	var mapDiv = document.getElementById("map");
 	map = new google.maps.Map(mapDiv, mapOptions);
+	
+	var title = "Your Location";
+	var content = "You are here: " + coords.latitude + ", " + coords.longitude;
+	addMarker(map, googleLatAndLong, title, content);
+}
+
+function addMarker(map, latlong, title, content) {
+	var markerOptions = {
+		position: latlong,
+		map: map,
+		title: title,
+		clickable: true
+	};
+	var marker = new google.maps.Marker(markerOptions);
+	
+	var infoWindowOptions = {
+		content: content,
+		position: latlong
+	};
+	
+	var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+	google.maps.event.addListener(marker, "click", function() {
+		infoWindow.open(map);
+	});
 }
 
 function displayError(error) {
