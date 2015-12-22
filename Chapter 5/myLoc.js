@@ -9,10 +9,22 @@ window.onload = function() {
 };
 
 function assignHandlersToButtons() {
+	var getCurrentPositionButton = document.getElementById("getPosition");
+	getCurrentPositionButton.onclick = getCurrentPosition;
 	var watchButton = document.getElementById("watch");
 	watchButton.onclick = watchLocation;
 	var clearWatchButton = document.getElementById("clearWatch");
 	clearWatchButton.onclick = clearWatch;
+}
+
+var options = {enableHighAccuracy: true, timeout: 100, maximumAge: 0};
+
+function getCurrentPosition() {
+	navigator.geolocation.getCurrentPosition(
+		displayLocation,
+		displayError,
+		options
+	);
 }
 
 function watchLocation() {
@@ -25,7 +37,7 @@ function displayLocation(position) {
 	var latitude = position.coords.latitude;
 	var longitude = position.coords.longitude;
 	var div = document.getElementById("location");
-	div.innerHTML = "You are at Latitude: " + latitude + ", longitude: " + longitude + " (with " + position.coords.accuracy + " meters accuracy)";
+	div.innerHTML = "You are at Latitude: " + latitude + ", longitude: " + longitude + " (with " + position.coords.accuracy + " meters accuracy)." + " Found in " + options.timeout + " milliseconds";
 	var ourCoords = {
 		latitude: 47.624851,
 		longitude: -122.52099
@@ -105,4 +117,11 @@ function displayError(error) {
 	}
 	var div = document.getElementById("location");
 	div.innerHTML = errorMessage;
+	options.timeout += 100;
+	navigator.geolocation.getCurrentPosition(
+		displayLocation,
+		displayError,
+		options
+	);
+	div.innerHTML += " ... checking again with timeout=" + options.timeout;
 }
