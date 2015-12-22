@@ -32,6 +32,7 @@ function watchLocation() {
 }
 
 var map;
+var prevCoords = null;
 
 function displayLocation(position) {
 	var latitude = position.coords.latitude;
@@ -47,6 +48,13 @@ function displayLocation(position) {
 	distance.innerHTML = "You are " + km + " km from WickedlySmart HQ";
 	if (map == null) {
 		showMap(position.coords);
+		prevCoords = position.coords;
+	} else {
+		var meters = computeDistance(position.coords, prevCoords) * 1000;
+		if (meters > 20) {
+			scrollMapToPositionAndAddMarker(position.coords);
+			prevCoords = position.coords;
+		}
 	}
 }
 
@@ -93,6 +101,13 @@ function addMarker(map, latlong, title, content) {
 	google.maps.event.addListener(marker, "click", function() {
 		infoWindow.open(map);
 	});
+}
+
+function scrollMapToPositionAndAddMarker(coords) {
+	var latitude = coords.latitude;
+	var longitude = coords.longitude;
+	var latlong = new google.maps.LatLng(latitude, longitude);
+	map.panTo(latlong);
 }
 
 var watchId = null;
