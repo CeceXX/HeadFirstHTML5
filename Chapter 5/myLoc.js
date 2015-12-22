@@ -1,30 +1,41 @@
-window.onload = getMyLocation;
+/* myLoc.js */
 
-var ourCoords = {
-	latitude: 47.624851,
-	longitude: -122.52099
-};
-
-function getMyLocation() {
+window.onload = function() {
 	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(displayLocation, displayError);
+		assignHandlersToButtons();
 	} else {
 		alert("Oops, no geolocation support");
 	}
+};
+
+function assignHandlersToButtons() {
+	var watchButton = document.getElementById("watch");
+	watchButton.onclick = watchLocation;
+	var clearWatchButton = document.getElementById("clearWatch");
+	clearWatchButton.onclick = clearWatch;
 }
+
+function watchLocation() {
+	watchId = navigator.geolocation.watchPosition(displayLocation, displayError);
+}
+
+var map;
 
 function displayLocation(position) {
 	var latitude = position.coords.latitude;
 	var longitude = position.coords.longitude;
 	var div = document.getElementById("location");
-	div.innerHTML = "You are at Latitude: " + latitude + ", longitude: " + longitude;
-	div.innerHTML += " (with " + position.coords.accuracy + " meters accuracy)";
-
+	div.innerHTML = "You are at Latitude: " + latitude + ", longitude: " + longitude + " (with " + position.coords.accuracy + " meters accuracy)";
+	var ourCoords = {
+		latitude: 47.624851,
+		longitude: -122.52099
+	};
 	var km = computeDistance(position.coords, ourCoords);
 	var distance = document.getElementById("distance");
 	distance.innerHTML = "You are " + km + " km from WickedlySmart HQ";
-	
-	showMap(position.coords);
+	if (map == null) {
+		showMap(position.coords);
+	}
 }
 
 function computeDistance(startCoords, destCoords) {
@@ -40,20 +51,15 @@ function degreesToRadians(degrees) {
 	return (degrees * Math.PI) / 180;
 }
 
-var map;
-
 function showMap(coords) {
 	var googleLatAndLong = new google.maps.LatLng(coords.latitude, coords.longitude);
-	
 	var mapOptions = {
 		zoom: 10,
 		center: googleLatAndLong,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
-	
 	var mapDiv = document.getElementById("map");
 	map = new google.maps.Map(mapDiv, mapOptions);
-	
 	var title = "Your Location";
 	var content = "You are here: " + coords.latitude + ", " + coords.longitude;
 	addMarker(map, googleLatAndLong, title, content);
@@ -67,16 +73,23 @@ function addMarker(map, latlong, title, content) {
 		clickable: true
 	};
 	var marker = new google.maps.Marker(markerOptions);
-	
 	var infoWindowOptions = {
 		content: content,
 		position: latlong
 	};
-	
 	var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
 	google.maps.event.addListener(marker, "click", function() {
 		infoWindow.open(map);
 	});
+}
+
+var watchId = null;
+
+function clearWatch() {
+	if (watchId != null) {
+		navigator.geolocation.clearWatch(watchId);
+		watchId = null;
+	}
 }
 
 function displayError(error) {
