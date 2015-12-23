@@ -8,9 +8,21 @@ window.onload = function() {
 function previewHandler() {
 	var canvas = document.getElementById("tshirtCanvas");
 	
-	if (canvas.getContext) {
+	if (canvas.getContext) {		
 		var context = canvas.getContext("2d");
 		fillBackground(canvas, context);
+		
+		// Paths and arcs
+		context.beginPath();
+		context.moveTo(100, 150);
+		context.lineTo(250, 75);
+		context.lineTo(125, 30);
+		context.closePath();
+		context.lineWidth = 5;
+		context.stroke();
+		context.fillStyle = "red";
+		context.fill();
+		
 		var selectObj = document.getElementById("shape");
 		var index = selectObj.selectedIndex;
 		var shape = selectObj[index].value;
@@ -30,7 +42,7 @@ function drawSquare(canvas, context) {
 	var width = Math.floor(Math.random() * 40);
 	var x = Math.floor(Math.random() * canvas.width);
 	var y = Math.floor(Math.random() * canvas.height);
-	context.fillStyle = "lightblue";
+	context.fillStyle = "#ccccff";
 	context.fillRect(x, y, width, width);
 }
 

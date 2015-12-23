@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Drawing paths</title>
+		<style>
+			canvas {border: black solid 1px;}
+		</style>
+		<script>
+			window.onload = function() {
+				var canvas = document.getElementById("myCanvas");
+				var context = canvas.getContext("2d");
+				
+				context.beginPath();
+				context.moveTo(100, 150);
+				context.lineTo(250, 75);
+				context.lineTo(125, 30);
+				context.closePath();
+				context.lineWidth = 5;
+				context.stroke();
+				context.fillStyle = "red";
+				context.fill();
+			}
+		</script>
+	</head>
+	<body>
+		<canvas width="500" height="500" id="myCanvas"></canvas>
+	</body>
+</html>
