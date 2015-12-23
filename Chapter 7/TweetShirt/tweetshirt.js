@@ -15,6 +15,8 @@ function previewHandler() {
 		var index = selectObj.selectedIndex;
 		var shape = selectObj[index].value;
 		
+		drawText(canvas, context);
+		
 		if (shape == "squares") {
 			for (var squares = 0; squares < 20; squares++) {
 				drawSquare(canvas, context);
@@ -48,10 +50,43 @@ function drawCircle(canvas, context) {
 	context.fill();
 }
 
+function drawText(canvas, context) {
+	var selectObj = document.getElementById("foregroundColor");
+	var index = selectObj.selectedIndex;
+	var fgColor = selectObj[index].value;
+	
+	context.fillStyle = fgColor;
+	context.font = "bold 1em sans-serif";
+	context.textAlign = "left";
+	context.fillText("I saw this tweet", 20, 40);
+	
+	var selectObj = document.getElementById("tweets");
+	var index = selectObj.selectedIndex;
+	var tweet = selectObj[index].value;
+	context.font = "italic 1.2em serif";
+	context.fillText(tweet, 30, 100);
+
+	context.font = "bold 1em sans-serif";
+	context.textAlign = "right";
+	context.fillText("and all I got was this lousy t-shirt!", canvas.width-20, canvas.height-40);
+
+}
+
 function degreesToRadians(degrees) {
 	return (degrees * Math.PI)/180;
 }
 
+function updateTweets(tweets) {
+	var tweetsSelection = document.getElementById("tweets");
+	for (var i = 0; i < tweets.length; i++) {
+		tweet = tweets[i];
+		var option = document.createElement("option");
+		option.text = tweet.text;
+		option.value = tweet.text.replace("\"", "'");
+		tweetsSelection.options.add(option);
+	}
+	tweetsSelection.selectedIndex = 0;
+}
 
 function fillBackground(canvas, context) {
 	var selectObj = document.getElementById("backgroundColor");
