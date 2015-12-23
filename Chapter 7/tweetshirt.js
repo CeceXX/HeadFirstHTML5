@@ -10,6 +10,7 @@ function previewHandler() {
 	
 	if (canvas.getContext) {
 		var context = canvas.getContext("2d");
+		fillBackground(canvas, context);
 		var selectObj = document.getElementById("shape");
 		var index = selectObj.selectedIndex;
 		var shape = selectObj[index].value;
@@ -31,4 +32,12 @@ function drawSquare(canvas, context) {
 	var y = Math.floor(Math.random() * canvas.height);
 	context.fillStyle = "lightblue";
 	context.fillRect(x, y, width, width);
+}
+
+function fillBackground(canvas, context) {
+	var selectObj = document.getElementById("backgroundColor");
+	var index = selectObj.selectedIndex;
+	var bgColor = selectObj.options[index].value;
+	context.fillStyle = bgColor;
+	context.fillRect(0, 0, canvas.width, canvas.height);
 }
