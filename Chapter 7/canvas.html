@@ -12,11 +12,18 @@
 			window.onload = function() {
 				var canvas = document.getElementById("tshirtCanvas");
 				var context = canvas.getContext("2d");
-				context.fillRect(10, 10, 100, 100);
+				
+				if (canvas.getContext) {
+					context.fillRect(10, 10, 100, 100);
+				} else {
+					alert("Upgrade your browser to support canvas!");
+				}
 			}
 		</script>
 	</head>
 	<body>
-		<canvas id="tshirtCanvas" width="600" height="200"></canvas>
+		<canvas id="tshirtCanvas" width="600" height="200">
+			Upgrade your browser to support canvas!
+		</canvas>
 	</body>
 </html>
