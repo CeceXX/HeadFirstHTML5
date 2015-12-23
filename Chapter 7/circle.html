@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Drawing paths</title>
+		<style>
+			canvas {border: black solid 1px;}
+		</style>
+		<script>
+			window.onload = function() {
+				var canvas = document.getElementById("myCanvas");
+				var context = canvas.getContext("2d");
+				context.arc(100, 100, 75, 0, degreesToRadians(270), 0, true)
+				context.lineWidth = 5;
+				context.stroke();
+				context.fillStyle = "red";
+				context.fill();
+			}
+			
+			function degreesToRadians(degrees) {
+				return (degrees * Math.PI)/180;
+			}
+		</script>
+	</head>
+	<body>
+		<canvas width="500" height="500" id="myCanvas"></canvas>
+	</body>
+</html>
