@@ -3,6 +3,7 @@
 window.onload = function() {	
 	var button = document.getElementById("previewButton");
 	button.onclick = previewHandler;
+	makeImage();
 }
 
 function previewHandler() {
@@ -27,7 +28,6 @@ function previewHandler() {
 				drawCircle(canvas, context);
 			}
 		}
-		
 	} else {
 		alert("Upgrade your browser to support canvas!");
 	}	
@@ -103,4 +103,11 @@ function fillBackground(canvas, context) {
 	var bgColor = selectObj.options[index].value;
 	context.fillStyle = bgColor;
 	context.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function makeImage() {
+	var canvas = document.getElementById("tshirtCanvas");
+	canvas.onclick = function() {
+		window.location = canvas.toDataURL("image/png");
+	}
 }
