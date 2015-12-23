@@ -1,6 +1,6 @@
 /* tweetshirt.js */
 
-window.onload = function() {
+window.onload = function() {	
 	var button = document.getElementById("previewButton");
 	button.onclick = previewHandler;
 }
@@ -16,7 +16,8 @@ function previewHandler() {
 		var shape = selectObj[index].value;
 		
 		drawText(canvas, context);
-		
+		drawBird(canvas, context);
+				
 		if (shape == "squares") {
 			for (var squares = 0; squares < 20; squares++) {
 				drawSquare(canvas, context);
@@ -33,7 +34,7 @@ function previewHandler() {
 }
 
 function drawSquare(canvas, context) {
-	var width = Math.floor(Math.random() * 40);
+	var width = Math.floor(Math.random() * 20);
 	var x = Math.floor(Math.random() * canvas.width);
 	var y = Math.floor(Math.random() * canvas.height);
 	context.fillStyle = "#ccccff";
@@ -41,7 +42,7 @@ function drawSquare(canvas, context) {
 }
 
 function drawCircle(canvas, context) {
-	var radius = Math.floor(Math.random() * 40);
+	var radius = Math.floor(Math.random() * 20);
 	var x = Math.floor(Math.random() * canvas.width);
 	var y = Math.floor(Math.random() * canvas.height);
 	context.beginPath();
@@ -70,6 +71,14 @@ function drawText(canvas, context) {
 	context.textAlign = "right";
 	context.fillText("and all I got was this lousy t-shirt!", canvas.width-20, canvas.height-40);
 
+}
+
+function drawBird(canvas, context) {
+	var twitterBird = new Image();
+	twitterBird.src = "twitterBird.png";
+	twitterBird.onload = function() {
+		context.drawImage(twitterBird, 20, 120, 70, 70);
+	}
 }
 
 function degreesToRadians(degrees) {
