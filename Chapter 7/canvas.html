@@ -8,8 +8,15 @@
 				border: black solid 1px;
 			}
 		</style>
+		<script>
+			window.onload = function() {
+				var canvas = document.getElementById("tshirtCanvas");
+				var context = canvas.getContext("2d");
+				context.fillRect(10, 10, 100, 100);
+			}
+		</script>
 	</head>
 	<body>
-		<canvas id="lookwhatIdrew" width="600" height="200"></canvas>
+		<canvas id="tshirtCanvas" width="600" height="200"></canvas>
 	</body>
 </html>
