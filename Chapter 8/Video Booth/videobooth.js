@@ -22,11 +22,13 @@ function handleControl(e) {
 	var id = e.target.getAttribute("id");
 	if (id == "play") {
 		pushUnpushButtons("play", ["pause"]);
+	} else if (id == "pause") {
+		pushUnpushButtons("pause", ["play"]);	
 	} else if (id == "loop") {
 		if (isButtonPushed("loop")) {
 			pushUnpushButtons("", ["loop"]);
 		} else {
-			pushUnpushButtons("mute", []);
+			pushUnpushButtons("loop", []);
 		}
 	} else if (id == "mute") {
 		if (isButtonPushed("mute")) {
@@ -64,9 +66,27 @@ function pushUnpushButtons(idToPush, idArrayToUnpush) {
 	if (idToPush != "") {
 		var anchor = document.getElementById(idToPush);
 		var theClass = anchor.getAttribute("class");
-		
+		if (!theClass.indexOf("selected") >= 0) {
+			theClass += " selected";
+			anchor.setAttribute("class", theClass);
+			var newImage = "url(images/" + idToPush + "pressed.png)";
+			anchor.style.backgroundImage = newImage;
+		}
+	}
+	
+	for (var i = 0; i < idArrayToUnpush.length; i++) {
+		anchor = document.getElementById(idArrayToUnpush[i]);
+		theClass = anchor.getAttribute("class");
+		if (theClass.indexOf("selected") >= 0) {
+			theClass = theClass.replace("selected", "");
+			anchor.setAttribute("class", theClass);
+			anchor.style.backgroundImage = "";
+		}
 	}
 }
 
-function isButtonPushed() {
+function isButtonPushed(id) {
+	var anchor = document.getElementById(id);
+	var theClass = anchor.getAttribute("class");
+	return (theClass.indexOf("selected") >= 0);
 }
