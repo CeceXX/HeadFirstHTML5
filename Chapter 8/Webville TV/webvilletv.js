@@ -19,7 +19,6 @@ window.onload = function() {
 	video.load();
 	video.play();
 	video.addEventListener("error", errorHandler, false);
-	assignImagesToButtons();
 }
 
 function nextVideo() {
@@ -53,9 +52,4 @@ function errorHandler() {
 function updateProgramName() {
 	var p = document.getElementById("programName");
 	p.innerHTML = playlistNames[position];
-}
-
-function assignImagesToButtons() {
-	var playButton = document.getElementById("playButton");
-	playButton.style.backgroundImage = "url(images/playButton.png)"; 
 }
