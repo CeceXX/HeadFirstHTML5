@@ -5,7 +5,7 @@ var playlist;
 var video;
 
 window.onload = function() {
-	playlist = ["video/preroll",
+	playlist = ["rvideo/preroll",
 				"video/areyoupopular",
 				"video/destinationearth"];
 	video = document.getElementById("video");
@@ -13,6 +13,7 @@ window.onload = function() {
 	video.src = playlist[position] + getFormatExtension();
 	video.load();
 	video.play();
+	video.addEventListener("error", errorHandler, false);
 }
 
 function nextVideo() {
@@ -32,5 +33,13 @@ function getFormatExtension() {
 		return ".webm";
 	} else if (video.canPlayType("video/ogg") != "") {
 		return ".ogv";
+	}
+}
+
+function errorHandler() {
+	var video = document.getElementById("video");
+	if (video.error) {
+		video.poster = "images/technicaldifficulties.jpg";
+		alert(video.error.code);
 	}
 }
