@@ -24,6 +24,7 @@ window.onload = function() {
 	pushUnpushButtons("video1", []);
 	pushUnpushButtons("normal", []);
 	video.addEventListener("ended", endedHandler, false);
+	video.addEventListener("play", processFrame, false);
 }
 
 function handleControl(e) {
@@ -128,4 +129,70 @@ function getFormatExtension() {
 	} else if (video.canPlayType("video/ogg") != "") {
 		return ".ogv";
 	}
+}
+
+function processFrame() {
+	var video = document.getElementById("video");
+	if (video.paused || video.ended) {
+		return;
+	}
+	var bufferCanvas = document.getElementById("buffer");
+	var displayCanvas = document.getElementById("display");
+	var buffer = bufferCanvas.getContext("2d");
+	var display = displayCanvas.getContext("2d");
+	
+	buffer.drawImage(video, 0, 0, bufferCanvas.width, bufferCanvas.height);
+	var frame = buffer.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
+	
+	var length = frame.data.length / 4;
+	for (var i = 0; i < length; i++) {
+		var r = frame.data[i * 4 + 0];
+		var g = frame.data[i * 4 + 1];
+		var b = frame.data[i * 3 + 2];
+		if (effectFunction)	{
+			effectFunction(i, r, g, b, frame.data);
+		}
+	}
+	display.putImageData(frame, 0, 0);
+	setTimeout(processFrame, 0);
+}
+
+function noir(pos, r, g, b, data) {
+	var brightness = (3*r + 4*g + b) >>> 3;
+	if (brightness < 0) {
+		brightness = 0;
+	}
+	data[pos * 4 + 0] = brightness;
+	data[pos * 4 + 1] = brightness;
+	data[pos * 4 + 2] = brightness;
+}
+
+function western(pos, r, g, b, data) {
+	var brightness = (3*r + 4*g + b) >>> 3;
+	data[pos * 4 + 0] = brightness+40;
+	data[pos * 4 + 1] = brightness+20;
+	data[pos * 4 + 2] = brightness-20;
+}
+
+function scifi(pos, r, g, b, data) {
+	var offset = pos * 4;
+	data[offset] = Math.round(255 - r);
+	data[offset+1] = Math.round(255 - g);
+	data[offset+2] = Math.round(255 - b);
+}
+
+function bwcartoon(pos, r, g, b, outputData) {
+	var offset = pos * 4;
+	if (outputData[offset] < 120) {
+		outputData[offset] = 80;
+		outputData[++offset] = 80;
+		outputData[++offset] = 80;
+		outputData[++offset] = 80;
+	} else {
+		outputData[offset] = 255;
+		outputData[++offset] = 255;
+		outputData[++offset] = 255;
+	}
+	outputData[++offset] = 255;
+	++offset;
 }
