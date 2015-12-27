@@ -2,18 +2,24 @@
 
 var position = 0;
 var playlist;
+var playlistNames;
 var video;
 
 window.onload = function() {
 	playlist = ["video/preroll",
 				"video/areyoupopular",
 				"video/destinationearth"];
+	playlistNames = ["Preroll",
+					 "Are you popular?",
+					 "Destination Earth"];
 	video = document.getElementById("video");
 	video.addEventListener("ended", nextVideo, false);
+	video.addEventListener("play", updateProgramName, false);
 	video.src = playlist[position] + getFormatExtension();
 	video.load();
 	video.play();
 	video.addEventListener("error", errorHandler, false);
+	assignImagesToButtons();
 }
 
 function nextVideo() {
@@ -42,4 +48,14 @@ function errorHandler() {
 		video.poster = "images/technicaldifficulties.jpg";
 		alert(video.error.code);
 	}
+}
+
+function updateProgramName() {
+	var p = document.getElementById("programName");
+	p.innerHTML = playlistNames[position];
+}
+
+function assignImagesToButtons() {
+	var playButton = document.getElementById("playButton");
+	playButton.style.backgroundImage = "url(images/playButton.png)"; 
 }
