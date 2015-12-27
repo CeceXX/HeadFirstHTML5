@@ -5,7 +5,7 @@ var playlist;
 var video;
 
 window.onload = function() {
-	playlist = ["rvideo/preroll",
+	playlist = ["video/preroll",
 				"video/areyoupopular",
 				"video/destinationearth"];
 	video = document.getElementById("video");
