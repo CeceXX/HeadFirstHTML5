@@ -3,6 +3,10 @@
 window.onload = function() {
 	for (var i = 0; i < localStorage.length; i++) {
 		var key = localStorage.key(i);
+		if (key.substring(0, 6) == "sticky") {
+			var value = localStorage.getItem(key);
+			addStickyToDOM(value);
+		}
 		var value = localStorage[key];
 	}	
 }
