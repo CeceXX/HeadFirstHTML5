@@ -1,8 +1,10 @@
 /* notetoself.js */
 
 window.onload = function() {
-	for (var i = 0; i < localStorage.length; i++) {
-		var key = localStorage.key(i);
+	var button = document.getElementById("add_button");
+	button.onclick = createSticky;
+	
+	for (var key in localStorage) {	
 		if (key.substring(0, 6) == "sticky") {
 			var value = localStorage.getItem(key);
 			addStickyToDOM(value);
@@ -19,6 +21,17 @@ function addStickyToDOM(value) {
 	span.innerHTML = value;
 	sticky.appendChild(span);
 	stickies.appendChild(sticky);	
+}
+
+function createSticky() {
+	var value = document.getElementById("note_text").value;
+	if (value != "") {
+		var key = "sticky_" + localStorage.length;
+		localStorage.setItem(key, value);
+		addStickyToDOM(value);
+	} else {
+		alert("Insert something!");
+	}
 }
 
 localStorage.setItem("sticky_0", "Pick up dry cleaning");
